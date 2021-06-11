@@ -16,8 +16,20 @@ reps = 0
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
     global reps
+    reps += 1
+    work = WORK_MIN * 60
+    short_break = SHORT_BREAK_MIN * 60
+    long_break = LONG_BREAK_MIN * 60
 
-    count_down(5 * 60)
+    if reps % 8 == 0:
+        count_down(long_break)
+        title_label.config(text="Break", fg=RED)
+    elif reps % 2 == 0:
+        count_down(short_break)
+        title_label.config(text="Break", fg=Pink)
+    else:
+        count_down(work)
+        title_label.config(text="Work", fg=Green)
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
@@ -31,7 +43,8 @@ def count_down(count):
     canvas.itemconfig(timer_text, text=f"{minutes}:{seconds}")
     if count > 0:
         window.after(1000,count_down, count - 1)
-
+    else:
+        start_timer()
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
